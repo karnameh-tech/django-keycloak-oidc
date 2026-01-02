@@ -1,9 +1,9 @@
 # django-keyclock-oidc
 
-This project depends on [mozilla-django-oidc](https://github.com/mozilla/mozilla-django-oidc/) and map keycloak roles and groups to django user permissions and groups.
+This project depends on [mozilla-django-oidc](https://github.com/mozilla/mozilla-django-oidc/) and map keycloak roles to django user permissions and groups.
 
 ## Features
-- Automatic mapping of Keycloak roles and groups to Django user permissions and groups
+- Automatic mapping of Keycloak roles to Django user permissions and groups
 - Django admin login integration with Keycloak
 - OIDC authentication with Keycloak
 

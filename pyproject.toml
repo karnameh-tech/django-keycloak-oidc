@@ -1,7 +1,7 @@
 [project]
 name = "django-keycloak-oidc"
-version = "0.1.255"
-description = "Django app to map Keycloak roles and groups to Django user permissions and groups using OIDC"
+version = "0.2.255"
+description = "Django app to map Keycloak roles to Django user permissions and groups using OIDC"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"

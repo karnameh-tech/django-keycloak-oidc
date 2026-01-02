@@ -74,7 +74,7 @@ class KeyCloakAuthenticationBackend(OIDCAuthenticationBackend):
 
     def user_permissions_mapping(self, user: UserModel, payload: dict) -> None:
         """
-        Map Keycloak roles and groups to Django user permissions and groups.
+        Map Keycloak roles to Django user permissions and groups.
         Args:
             user (UserModel): The Django user instance.
             payload (dict): The payload received from Keycloak.
@@ -82,16 +82,12 @@ class KeyCloakAuthenticationBackend(OIDCAuthenticationBackend):
             None
         """
         is_superuser = self.is_superuser(user, payload)
-        permissions = self.keycloak_roles_to_permissions_mapping(
-            user, payload
-        ) + self.keycloak_groups_to_permissions_mapping(user, payload)
-        groups = self.keycloak_roles_to_groups_mapping(
-            user, payload
-        ) + self.keycloak_groups_to_permissions_mapping(user, payload)
+        permissions = self.keycloak_roles_to_permissions_mapping(user, payload)
+        groups = self.keycloak_roles_to_groups_mapping(user, payload)
 
         self.set_staff(
             user=user,
-            value=(is_superuser or permissions or groups),
+            value=(is_superuser or permissions != [] or groups != []),
         )
 
     def is_superuser(self, user: UserModel, payload: dict) -> bool:
@@ -171,58 +167,6 @@ class KeyCloakAuthenticationBackend(OIDCAuthenticationBackend):
                     user.groups.add(group)
         user.save()
         return groups
-
-    @staticmethod
-    def keycloak_groups_to_groups_mapping(
-        user: UserModel, payload: dict
-    ) -> list[Group]:
-        """
-        Map Keycloak groups to Django user groups.
-        Args:
-            user (UserModel): The Django user instance.
-            payload (dict): The payload received from Keycloak.
-        Returns:
-            List[Group]: A list of Django groups assigned to the user.
-        """
-        user.groups.clear()
-        claim_groups = payload.get("groups", [])
-        groups = []
-        for claim_group in claim_groups:
-            keycloak_mappings = KeyCloakPermissionMapping.objects.filter(
-                keycloak_group_name=claim_group,
-            )
-            for mapping in keycloak_mappings:
-                for group in mapping.groups.all():
-                    groups.append(group)
-                    user.groups.add(group)
-        user.save()
-        return groups
-
-    @staticmethod
-    def keycloak_groups_to_permissions_mapping(
-        user: UserModel, payload: dict
-    ) -> list[Permission]:
-        """
-        Map Keycloak groups to Django user permissions.
-        Args:
-            user (UserModel): The Django user instance.
-            payload (dict): The payload received from Keycloak.
-        Returns:
-            List[Permission]: A list of Django permissions assigned to the user.
-        """
-        user.user_permissions.clear()
-        claim_groups = payload.get("groups", [])
-        permissions = []
-        for claim_group in claim_groups:
-            keycloak_mappings = KeyCloakPermissionMapping.objects.filter(
-                keycloak_group_name=claim_group,
-            )
-            for mapping in keycloak_mappings:
-                for perm in mapping.permissions.all():
-                    permissions.append(perm)
-                    user.user_permissions.add(perm)
-        user.save()
-        return permissions
 
     @staticmethod
     def set_staff(user: UserModel, value: bool = True) -> None:
