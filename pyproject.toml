@@ -1,0 +1,75 @@
+[project]
+name = "django-keycloak-oidc"
+version = "0.1.0"
+description = "Django app to map Keycloak roles and groups to Django user permissions and groups using OIDC"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "django>=4.2",
+    "mozilla-django-oidc>=5.0.2",
+]
+maintainers = [
+    { name = "Mohsen Khodabakhshi", email = "devbynature@proton.me" },
+]
+keywords = ["django", "keycloak", "oidc", "authentication", "sso", "openid-connect"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/devbynature/django-keycloak-oidc"
+Repository = "https://github.com/devbynature/django-keycloak-oidc"
+Documentation = "https://github.com/devbynature/django-keycloak-oidc#readme"
+Issues = "https://github.com/devbynature/django-keycloak-oidc/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.4",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"django_keycloak_oidc/migrations/*.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_keycloak_oidc"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/django_keycloak_oidc",
+    "/README.md",
+]
