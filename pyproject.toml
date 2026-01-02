@@ -33,10 +33,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/devbynature/django-keycloak-oidc"
-Repository = "https://github.com/devbynature/django-keycloak-oidc"
-Documentation = "https://github.com/devbynature/django-keycloak-oidc#readme"
-Issues = "https://github.com/devbynature/django-keycloak-oidc/issues"
+Homepage = "https://github.com/karnameh-tech/django-keycloak-oidc"
+Repository = "https://github.com/karnameh-tech/django-keycloak-oidc"
+Documentation = "https://github.com/karnameh-tech/django-keycloak-oidc#readme"
+Issues = "https://github.com/karnameh-tech/django-keycloak-oidc/issues"
 
 [project.optional-dependencies]
 dev = [
