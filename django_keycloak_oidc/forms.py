@@ -8,7 +8,7 @@ class KeyCloakPermissionMappingForm(forms.ModelForm):
         model = KeyCloakPermissionMapping
         fields = (
             "keycloak_role_name",
-            # "keycloak_group_name",
+            "keycloak_group_name",
             "groups",
             "permissions",
         )

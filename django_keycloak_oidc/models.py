@@ -30,3 +30,8 @@ class KeyCloakPermissionMapping(models.Model):
         null=True,
         blank=True,
     )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Is Active"),
+        help_text=_("Designates whether this mapping is active."),
+    )

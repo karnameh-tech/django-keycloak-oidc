@@ -1,9 +1,9 @@
 # django-keyclock-oidc
 
-This project depends on [mozilla-django-oidc](https://github.com/mozilla/mozilla-django-oidc/) and map keycloak roles to django user permissions and groups.
+This project depends on [mozilla-django-oidc](https://github.com/mozilla/mozilla-django-oidc/) and map keycloak roles and groups to django user permissions and groups.
 
 ## Features
-- Automatic mapping of Keycloak roles to Django user permissions and groups
+- Automatic mapping of Keycloak roles and groups to Django user permissions and groups
 - Django admin login integration with Keycloak
 - OIDC authentication with Keycloak
 
@@ -100,7 +100,22 @@ python manage.py migrate
 ## Configuration
 You can see configuration of the original project [here](https://mozilla-django-oidc.readthedocs.io/en/latest/).
 
-My sample configuration(`settings.py`) is as below:
+1. Keycloak setup:
+    - You need to add `Group Membership` and `User Realm Role` from Client scopes -> profile -> Mappers -> Add mapper -> By configuration:
+        - User Realm Role:
+            - Mapper Type: `User Realm Role`
+            - Name: `roles`
+            - Token Claim Name: `roles`
+          - Add to ID token, Add to access token, Add to userinfo, Add to token introspection: `on`
+        - Group Membership:
+            - Mapper Type: `Group Membership`
+            - Name: `groups`
+            - Token Claim Name: `groups`
+            - Full group path: `off` . if its on, you must enter group name in django admin with full path.
+            - Add to ID token, Add to access token, Add to userinfo, Add to token introspection: `on`
+    - And create you `roles` and `groups` in your Keycloak console.
+
+2. My Django sample configuration(`settings.py`) is as below:
 
 ```python
 OIDC_RP_CLIENT_ID = "<client-id>"
@@ -121,7 +136,11 @@ LOGOUT_REDIRECT_URL = "/leasing/admin/login/"
 
 # (django-keycloak-oidc) settings for customizing the login button in django admin login page(make sure you did step 5 in installation):
 KEYCLOAK_DJANGO_ADMIN_LOGIN_VISIBLE = True
-KEYCLOAK_DJANGO_ADMIN_LOGIN_DIRECTION = "ltr"
+KEYCLOAK_DJANGO_ADMIN_LOGIN_DIRECTION = "rtl"
 KEYCLOAK_DJANGO_ADMIN_LOGIN_TEXT = "Login with"
 KEYCLOAK_DJANGO_ADMIN_LOGIN_LOGO = "https://karnameh.com/assets/logos/karnameh-logo.svg"
 ```
+
+3. Go to your Django admin and start mapping:
+
+![mapping](https://raw.githubusercontent.com/karnameh-tech/django-keycloak-oidc/refs/heads/main/assets/mapping.png)
